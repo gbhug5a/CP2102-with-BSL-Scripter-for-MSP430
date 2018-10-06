@@ -1,0 +1,29 @@
+
+C:\MSP430>INVOKE.exe COM4 
+COM port Opened 
+BSL invoke pattern transmitted 
+
+C:\MSP430>BSL-Scripter.exe script.txt 
+---------------------------------------------------------
+BSL Scripter 3.4.0.1
+
+PC software for BSL programming
+2018-Oct-05 18:50:43
+---------------------------------------------------------
+Input file script is : C:/MSP430/script.txt
+
+MODE FRxx UART COM4 PARITY
+	Baud rate setup for UART is not given / wrong
+	It will be setup to the default 9600baud
+//Use this line on first flash when reset vector = FFFF
+//RX_PASSWORD
+RX_PASSWORD MosPW.txt
+	Read Txt File  : C:\MSP430\MosPW.txt
+	BSL Password is correct!
+RX_DATA_BLOCK Mostest.hex
+	Read Txt File  : C:\MSP430\Mostest.hex
+	Time elapsed of writing 62 bytes : 0.115 seconds
+	Speed of writing data :0.5265(kB/s)
+TX_BSL_VERSION
+	Vendor:[TI] CI:[08] API:[35] PI:[B3]
+

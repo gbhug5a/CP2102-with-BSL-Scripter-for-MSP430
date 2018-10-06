@@ -1,0 +1,6 @@
+MODE FRxx UART COM4 PARITY
+//Use this line on first flash when reset vector = FFFF
+//RX_PASSWORD
+RX_PASSWORD MosPW.txt
+RX_DATA_BLOCK Mostest.hex
+TX_BSL_VERSION

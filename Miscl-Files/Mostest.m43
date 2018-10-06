@@ -1,0 +1,51 @@
+.msp430
+
+;FR2311 test - turns on LED on P1.0
+
+;Written for the Naken Assembler
+
+ResetVector	equ	0xFFFE			; Couldn't find .h file for this part
+RAMend		equ	0x2400
+WDTPW		equ	0x5A00
+WDTHOLD		equ	0x80
+WDTCTL		equ	0x01CC
+P1OUT		equ	0x0202
+P1DIR		equ	0x0204
+P1REN		equ	0x0206
+P2OUT		equ	0x0203
+P2DIR		equ	0x0205
+P2REN		equ	0x0207
+LOCKLPM5	equ	1
+PM5CTL0		equ	0x0130
+LPM4		equ	0xF0
+
+.org	0xF100
+
+Powerup:
+
+	mov.w	RAMend-4,	SP		; Initialize stackpointer
+	mov.w	#WDTPW+WDTHOLD,	&WDTCTL		; Stop WDT
+
+PortSetup:
+
+	mov.b	#0,		&P1DIR		; Set both ports to Input, PD resistor
+	mov.b	#0,		&P1OUT
+	mov.b	#0xFF,		&P1REN
+	mov.b	#0,		&P2DIR
+	mov.b	#0,		&P2OUT
+	mov.b	#0xFF,		&P2REN
+
+	bic.b	#1,		&P1REN		; Set P1.0 to high output, no resistor
+	bis.b	#1,		&P1DIR
+	bis.b	#1,		&P1OUT
+
+	bic.w	#LOCKLPM5,	&PM5CTL0	; Unlock I/O pins
+
+	bis.w	#LPM4,		SR		; go to sleep
+
+Loop:	nop					; In case we get here (shouldn't)
+	jmp	Loop
+	nop
+
+.org	ResetVector
+.dw	Powerup
