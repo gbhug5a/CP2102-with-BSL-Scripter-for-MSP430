@@ -59,7 +59,6 @@ int main(int argc,char *argv[])
         return 0;
     }
 
-
     char CFcomport[20] = "\\\\.\\";
     strcat (CFcomport,argv[comport]);
 
@@ -84,13 +83,6 @@ int main(int argc,char *argv[])
         printf("COM port Opened \n");
     }
 
-    PurgeComm(hMasterCOM, PURGE_TXABORT | PURGE_RXABORT | PURGE_TXCLEAR | PURGE_RXCLEAR);
-
-    DCB dcbMasterInitState;                     /* Read and save intial state of port */
-    GetCommState(hMasterCOM, &dcbMasterInitState);
-
-    Sleep(100);
-
     /* DTR and RTS are inverted at final output, so CLR means High and SET means Low */
 
     EscapeCommFunction(hMasterCOM, CLRDTR);     /* start with both lines high */
@@ -98,7 +90,7 @@ int main(int argc,char *argv[])
 
     timeBeginPeriod(1);                         /* Change system tick resolution from 15ms to 1ms */
 
-    Sleep(50);
+    Sleep(100);                                 /* Capacitor charges */
 
     EscapeCommFunction(hMasterCOM, SETDTR);     /* Bring both lines low */
     EscapeCommFunction(hMasterCOM, SETRTS);     /* MOSFET On because capacitor still charged */
@@ -120,16 +112,9 @@ int main(int argc,char *argv[])
 
     timeEndPeriod(1);                           /* Restore system tick */
 
-    dcbMasterInitState.fDtrControl = 0;         /* Change orginal init state DTR to off = high) */
-    dcbMasterInitState.fRtsControl = 1;         /* Change orginal init state RTS to on = low) */
-
     printf("BSL invoke pattern transmitted \n");
 
-    SetCommState(hMasterCOM, &dcbMasterInitState);  /* Restore original init state */
-
-    Sleep(60);                                      /* Sleep a little more */
-
-    CloseHandle(hMasterCOM);                        /* Close port - DTR = high. RTS = low */
+    CloseHandle(hMasterCOM);                    /* Close port - DTR = high. RTS = low */
 
     hMasterCOM = INVALID_HANDLE_VALUE;
 
