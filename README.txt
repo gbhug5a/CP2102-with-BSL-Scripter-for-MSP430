@@ -1,3 +1,15 @@
+NOTICE:
+=======
+
+A new modified version of BSL-Scripter.exe for Windows has been compiled
+which makes everything in this repo obsolete.  The new version directly
+generates the hardware invocation pattern on DTR and RTS if the "INVOKE"
+option is included on the MODE line.  So there is no longer any need for
+INVOKE.exe, or manually or electronically disconnecting the lines in the
+middle of the process.  The new Scripter can be found here:
+
+https://github.com/drcrane/bslscripter-vs2017/releases
+
 
 Using a CP2102 with BSL-Scripter for MSP430
 -------------------------------------------
